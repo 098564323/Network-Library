@@ -25,4 +25,18 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    //RX Java Library
+    implementation "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxJavaVersion"
+    //RX Android Library
+    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.ext.rxAndroidVersion"
+    //FastNetworking Library
+    implementation "com.amitshekhar.android:android-networking:$rootProject.ext.fastNetworkLibVerstion"
+    //Stetho Library
+    implementation "com.facebook.stetho:stetho:$rootProject.ext.stethoVersion"
+    implementation "com.facebook.stetho:stetho-okhttp3:$rootProject.ext.stethoVersion"
+    //OkHtpp Library
+    implementation "com.squareup.okhttp3:okhttp:$rootProject.ext.okHttpVersion"
+    //
+    implementation group: 'javax.ws.rs', name: 'javax.ws.rs-api', version: "$rootProject.ext.javaxVersion"
+
 }

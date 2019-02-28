@@ -5,21 +5,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
-public class MainActivity {
+import com.icreative.networkLibrary.apiInterface.ApiBuilder;
+import com.icreative.networkLibrary.apiInterface.ApiModel;
 
+import java.util.HashMap;
 
-    public static void toastMessage(Context context, String message) {
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-    }
+import okhttp3.OkHttpClient;
+import okhttp3.internal.http.HttpMethod;
 
-} /*extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //
+        HashMap<String, String> mapData = new HashMap<>();
+        ApiModel apiModel = new ApiBuilder("Your Custom URL is ").setMapData(mapData).build();
+        //
 
     }
 
-
-}*/
+}

@@ -1,6 +1,8 @@
 package com.icreative.networkLibrary.apiInterface;
 
 
+import android.util.Log;
+
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.ANRequest;
 import com.androidnetworking.common.Priority;
@@ -33,24 +35,28 @@ public class APICaller {
      * @param apiInterface
      * @param <T>
      */
-    public <T> void requestGetMethod(String URL, HashMap<?, ?> requestData, final T yourModelName, final APIInterface apiInterface) {
+    public void requestGetMethod(String URL, HashMap<?, ?> requestData, Class yourModelName, final APIInterface apiInterface) {
         //
         ANRequest.GetRequestBuilder getRequestBuilder = AndroidNetworking.get(URL);
         //
         //getRequestBuilder.addHeaders("");
         //
-        getRequestBuilder.addPathParameter(requestData);
+        //getRequestBuilder.addPathParameter(requestData);
         //
-        getRequestBuilder.addQueryParameter(requestData);
+        //getRequestBuilder.addQueryParameter(requestData);
+        //
         getRequestBuilder.setPriority(Priority.MEDIUM);
         //
         ANRequest anRequest = getRequestBuilder.build();
         anRequest.getAsJSONObject(new JSONObjectRequestListener() {
             @Override
             public void onResponse(JSONObject response) {
+                //
+                Log.e("myTag", "" + response.toString());
+                //
                 Gson gson = new Gson();
                 //
-                apiInterface.getResponseData(Observable.just(gson.fromJson(response.toString(), yourModelName.getClass())));
+                apiInterface.getResponseData(Observable.just(gson.fromJson(response.toString(), yourModelName)));
                 //
             }
 

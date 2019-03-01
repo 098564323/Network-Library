@@ -17,8 +17,7 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
 
-public class MainActivity {
-}/*extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,9 +25,9 @@ public class MainActivity {
         setContentView(R.layout.activity_main);
         //
         HashMap<String, String> mapData = new HashMap<>();
-        APIModel apiModel = new APIBuilder("Your Custom URL is ").setMethodName("").setRequestData(mapData).build();
+        APIModel apiModel = new APIBuilder("http://68.66.207.57/laser_api/").setMethodName("get_all_users.php").setRequestData(mapData).build();
         //
-        apiModel.getDataOverNetwork(HTTPMethod.GET, null, new APIInterface() {
+        apiModel.getDataOverNetwork(HTTPMethod.GET, GetAllData.class, new APIInterface() {
             @Override
             public <T> void getResponseData(Observable<T> observableData) {
                 observableData.subscribe(new Observer<T>() {
@@ -39,7 +38,7 @@ public class MainActivity {
 
                     @Override
                     public void onNext(T t) {
-                        Log.e("myTag", "OnNext Will Be called");
+                        Log.e("myTag", "OnNext Will Be called "+(t instanceof GetAllData));
                     }
 
                     @Override
@@ -57,4 +56,4 @@ public class MainActivity {
         });
     }
 
-}*/
+}

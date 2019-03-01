@@ -48,11 +48,11 @@ public class APIModel {
      * @param apiInterface
      * @param <T>
      */
-    public <T> void getDataOverNetwork(HTTPMethod httpMethod, T yourModelName, APIInterface apiInterface) {
+    public void getDataOverNetwork(HTTPMethod httpMethod, Class yourModelName, APIInterface apiInterface) {
         switch (httpMethod) {
             case GET:
                 Log.e("myTag", "GET Method is call from here == " + (URL + methodName));
-                APICaller.getInstance().requestGetMethod(URL + methodName, requestData,yourModelName, apiInterface);
+                APICaller.getInstance().requestGetMethod(URL + methodName, requestData, yourModelName, apiInterface);
                 break;
             case PUT:
                 Log.e("myTag", "PUT Method is call from here");

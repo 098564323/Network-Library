@@ -2,43 +2,64 @@ package com.icreative.networkLibrary.apiInterface;
 
 
 import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.ANRequest;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONArrayRequestListener;
 
-import org.json.JSONArray;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.google.gson.Gson;
 
-import okhttp3.internal.http.HttpMethod;
+import org.json.JSONObject;
 
-public class ApiCaller {
+import java.util.HashMap;
 
-    private static ApiCaller instance;
+import io.reactivex.Observable;
 
-    public static ApiCaller getInstance() {
+public class APICaller {
+
+    private static APICaller instance;
+
+    public static APICaller getInstance() {
         if (instance == null) {
-            instance = new ApiCaller();
+            instance = new APICaller();
         }
 
         return instance;
     }
 
-    public void testData(String URL) {
-        AndroidNetworking.get(URL)
-                .addPathParameter("pageNumber", "0")
-                .addQueryParameter("limit", "3")
-                .setPriority(Priority.LOW)
-                .build()
-                .getAsJSONArray(new JSONArrayRequestListener() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        // do anything with response
-                    }
+    /**
+     * @param URL
+     * @param yourModelName
+     * @param apiInterface
+     * @param <T>
+     */
+    public <T> void requestGetMethod(String URL, HashMap<?, ?> requestData, final T yourModelName, final APIInterface apiInterface) {
+        //
+        ANRequest.GetRequestBuilder getRequestBuilder = AndroidNetworking.get(URL);
+        //
+        //getRequestBuilder.addHeaders("");
+        //
+        getRequestBuilder.addPathParameter(requestData);
+        //
+        getRequestBuilder.addQueryParameter(requestData);
+        getRequestBuilder.setPriority(Priority.MEDIUM);
+        //
+        ANRequest anRequest = getRequestBuilder.build();
+        anRequest.getAsJSONObject(new JSONObjectRequestListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Gson gson = new Gson();
+                //
+                apiInterface.getResponseData(Observable.just(gson.fromJson(response.toString(), yourModelName.getClass())));
+                //
+            }
 
-                    @Override
-                    public void onError(ANError error) {
-                        // handle error
-                    }
-                });
+            @Override
+            public void onError(ANError anError) {
+                apiInterface.getResponseData(Observable.error(anError));
+            }
+        });
     }
+
 
 }

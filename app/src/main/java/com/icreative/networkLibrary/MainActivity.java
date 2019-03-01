@@ -1,17 +1,21 @@
 package com.icreative.networkLibrary;
 
-import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.util.Log;
 
-import com.icreative.networkLibrary.apiInterface.ApiBuilder;
-import com.icreative.networkLibrary.apiInterface.ApiModel;
+import com.androidnetworking.error.ANError;
+import com.icreative.networkLibrary.apiInterface.APIInterface;
+import com.icreative.networkLibrary.apiInterface.APIBuilder;
+import com.icreative.networkLibrary.apiInterface.APIModel;
+import com.icreative.networkLibrary.httpClient.HTTPMethod;
 
 import java.util.HashMap;
 
-import okhttp3.OkHttpClient;
-import okhttp3.internal.http.HttpMethod;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,9 +25,35 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //
         HashMap<String, String> mapData = new HashMap<>();
-        ApiModel apiModel = new ApiBuilder("Your Custom URL is ").setMapData(mapData).build();
+        APIModel apiModel = new APIBuilder("Your Custom URL is ").setMethodName("").setRequestData(mapData).build();
         //
+        apiModel.getDataOverNetwork(HTTPMethod.GET, null, new APIInterface() {
+            @Override
+            public <T> void getResponseData(Observable<T> observableData) {
+                observableData.subscribe(new Observer<T>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        Log.e("myTag", "OnSubscribe Will Be called");
+                    }
 
+                    @Override
+                    public void onNext(T t) {
+                        Log.e("myTag", "OnNext Will Be called");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("myTag", "Error Data is " + ((ANError) e).getErrorBody() + " Message Data " + e.getMessage());
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.e("myTag", "OnComplete Will Be called");
+                    }
+                });
+            }
+        });
     }
 
 }

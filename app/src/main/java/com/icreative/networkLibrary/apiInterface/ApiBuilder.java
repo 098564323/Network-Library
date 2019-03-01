@@ -2,27 +2,32 @@ package com.icreative.networkLibrary.apiInterface;
 
 import java.util.HashMap;
 
-public class ApiBuilder {
+public class APIBuilder {
 
-    private String URL;
-    private HashMap<?, ?> mapData;
+    public String URL;
+    public String methodName;
+    public HashMap<?, ?> requestData;
 
-    public ApiBuilder(String URL) {
+    public APIBuilder(String URL) {
         this.URL = URL;
     }
 
-
-    public ApiBuilder setURL(String URL) {
+    public APIBuilder setURL(String URL) {
         this.URL = URL;
         return this;
     }
 
-    public <key, value> ApiBuilder setMapData(HashMap<key, value> mapData) {
-        this.mapData = mapData;
+    public APIBuilder setMethodName(String methodName) {
+        this.methodName = methodName;
         return this;
     }
 
-    public ApiModel build() {
-        return new ApiModel(URL, mapData);
+    public <key, value> APIBuilder setRequestData(HashMap<key, value> requestData) {
+        this.requestData = requestData;
+        return this;
+    }
+
+    public APIModel build() {
+        return new APIModel(this);
     }
 }

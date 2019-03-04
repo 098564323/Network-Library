@@ -7,10 +7,8 @@ public class APIBuilder {
     public String URL;
     public String methodName;
     public HashMap<?, ?> requestData;
-
-    public APIBuilder(String URL) {
-        this.URL = URL;
-    }
+    public HashMap<?, ?> multiPartFileData;
+    public boolean isReturnJsonFormat;
 
     public APIBuilder setURL(String URL) {
         this.URL = URL;
@@ -24,6 +22,16 @@ public class APIBuilder {
 
     public <key, value> APIBuilder setRequestData(HashMap<key, value> requestData) {
         this.requestData = requestData;
+        return this;
+    }
+
+    public <key, value> APIBuilder setMultiPartFileData(HashMap<key, value> multiPartFileData) {
+        this.multiPartFileData = multiPartFileData;
+        return this;
+    }
+
+    public APIBuilder setResponseAsJson(boolean isReturnJsonFormat) {
+        this.isReturnJsonFormat = isReturnJsonFormat;
         return this;
     }
 

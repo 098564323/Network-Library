@@ -2,5 +2,5 @@ package com.icreative.networkLibrary.httpClient;
 
 public enum HTTPMethod {
 
-    GET, POST, PUT, DELETE
+    GET, POST, PUT, DELETE, MULTIPART
 }

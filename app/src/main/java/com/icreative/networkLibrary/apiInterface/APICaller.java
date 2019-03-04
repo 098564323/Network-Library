@@ -1,8 +1,5 @@
 package com.icreative.networkLibrary.apiInterface;
 
-
-import android.util.Log;
-
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.ANRequest;
 import com.androidnetworking.common.Priority;
@@ -12,8 +9,6 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
-
-import java.util.HashMap;
 
 import io.reactivex.Observable;
 
@@ -30,20 +25,13 @@ public class APICaller {
     }
 
     /**
-     * @param URL
+     * @param apiBuilder
      * @param yourModelName
      * @param apiInterface
-     * @param <T>
      */
-    public void requestGetMethod(String URL, HashMap<?, ?> requestData, Class yourModelName, final APIInterface apiInterface) {
+    public void requestForGetMethod(APIBuilder apiBuilder, Class yourModelName, final APIInterface apiInterface) {
         //
-        ANRequest.GetRequestBuilder getRequestBuilder = AndroidNetworking.get(URL);
-        //
-        //getRequestBuilder.addHeaders("");
-        //
-        //getRequestBuilder.addPathParameter(requestData);
-        //
-        //getRequestBuilder.addQueryParameter(requestData);
+        ANRequest.GetRequestBuilder getRequestBuilder = AndroidNetworking.get(apiBuilder.URL + apiBuilder.methodName);
         //
         getRequestBuilder.setPriority(Priority.MEDIUM);
         //
@@ -51,13 +39,14 @@ public class APICaller {
         anRequest.getAsJSONObject(new JSONObjectRequestListener() {
             @Override
             public void onResponse(JSONObject response) {
-                //
-                Log.e("myTag", "" + response.toString());
-                //
-                Gson gson = new Gson();
-                //
-                apiInterface.getResponseData(Observable.just(gson.fromJson(response.toString(), yourModelName)));
-                //
+                if (apiBuilder.isReturnJsonFormat) {
+                    apiInterface.getResponseData(Observable.just(response.toString()));
+                } else {
+                    //
+                    Gson gson = new Gson();
+                    //
+                    apiInterface.getResponseData(Observable.just(gson.fromJson(response.toString(), yourModelName)));
+                }
             }
 
             @Override
@@ -68,4 +57,72 @@ public class APICaller {
     }
 
 
+    /**
+     * @param apiBuilder
+     * @param yourModelName
+     * @param apiInterface
+     */
+    public void requestForPostMethod(APIBuilder apiBuilder, Class yourModelName, final APIInterface apiInterface) {
+        //
+        ANRequest.PostRequestBuilder postRequestBuilder = AndroidNetworking.post(apiBuilder.URL + apiBuilder.methodName);
+        //
+        postRequestBuilder.setPriority(Priority.MEDIUM);
+        postRequestBuilder.addBodyParameter(apiBuilder.requestData);
+        //
+        ANRequest anRequest = postRequestBuilder.build();
+        anRequest.getAsJSONObject(new JSONObjectRequestListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                if (apiBuilder.isReturnJsonFormat) {
+                    apiInterface.getResponseData(Observable.just(response.toString()));
+                } else {
+                    //
+                    Gson gson = new Gson();
+                    //
+                    apiInterface.getResponseData(Observable.just(gson.fromJson(response.toString(), yourModelName)));
+                }
+            }
+
+            @Override
+            public void onError(ANError anError) {
+                apiInterface.getResponseData(Observable.error(anError));
+            }
+        });
+
+
+    }
+
+    /**
+     * @param apiBuilder
+     * @param yourModelName
+     * @param apiInterface
+     */
+    public void requestForMultiPart(APIBuilder apiBuilder, Class yourModelName, final APIInterface apiInterface) {
+        //
+        ANRequest.MultiPartBuilder multiPartBuilder = new ANRequest.MultiPartBuilder(apiBuilder.URL + apiBuilder.methodName);
+        //
+        multiPartBuilder.setPriority(Priority.MEDIUM);
+        multiPartBuilder.addMultipartFileList(apiBuilder.multiPartFileData);
+        multiPartBuilder.addMultipartParameter(apiBuilder.requestData);
+        //
+        ANRequest anRequest = multiPartBuilder.build();
+        anRequest.getAsJSONObject(new JSONObjectRequestListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                if (apiBuilder.isReturnJsonFormat) {
+                    apiInterface.getResponseData(Observable.just(response.toString()));
+                } else {
+                    //
+                    Gson gson = new Gson();
+                    //
+                    apiInterface.getResponseData(Observable.just(gson.fromJson(response.toString(), yourModelName)));
+                }
+            }
+
+            @Override
+            public void onError(ANError anError) {
+                apiInterface.getResponseData(Observable.error(anError));
+            }
+        });
+    }
 }

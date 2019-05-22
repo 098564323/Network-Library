@@ -1,10 +1,11 @@
 package com.icreative.networkLibrary.apiInterface;
 
+import android.util.Log;
+
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.ANRequest;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
-
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.gson.Gson;
 
@@ -67,7 +68,11 @@ public class APICaller {
         ANRequest.PostRequestBuilder postRequestBuilder = AndroidNetworking.post(apiBuilder.URL + apiBuilder.methodName);
         //
         postRequestBuilder.setPriority(Priority.MEDIUM);
-        postRequestBuilder.addBodyParameter(apiBuilder.requestData);
+        //
+        if (apiBuilder.isRequestJsonFormat)
+            postRequestBuilder.addJSONObjectBody(apiBuilder.requestJsonObject);
+        else
+            postRequestBuilder.addBodyParameter(apiBuilder.requestData);
         //
         ANRequest anRequest = postRequestBuilder.build();
         anRequest.getAsJSONObject(new JSONObjectRequestListener() {

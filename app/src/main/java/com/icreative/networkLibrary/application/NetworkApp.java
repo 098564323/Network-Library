@@ -20,7 +20,7 @@ public class NetworkApp extends Application {
         //
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.HEADERS);
+        // loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.HEADERS);
         //
         OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
                 .readTimeout(60, TimeUnit.SECONDS)

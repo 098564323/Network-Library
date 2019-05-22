@@ -1,5 +1,7 @@
 package com.icreative.networkLibrary.apiInterface;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 
 public class APIBuilder {
@@ -9,6 +11,8 @@ public class APIBuilder {
     public HashMap<?, ?> requestData;
     public HashMap<?, ?> multiPartFileData;
     public boolean isReturnJsonFormat;
+    public JSONObject requestJsonObject;
+    public boolean isRequestJsonFormat;
 
     public APIBuilder setURL(String URL) {
         this.URL = URL;
@@ -25,6 +29,11 @@ public class APIBuilder {
         return this;
     }
 
+    public APIBuilder setRequestJSONObject(JSONObject requestJsonObject) {
+        this.requestJsonObject = requestJsonObject;
+        return this;
+    }
+
     public <key, value> APIBuilder setMultiPartFileData(HashMap<key, value> multiPartFileData) {
         this.multiPartFileData = multiPartFileData;
         return this;
@@ -32,6 +41,11 @@ public class APIBuilder {
 
     public APIBuilder setResponseAsJson(boolean isReturnJsonFormat) {
         this.isReturnJsonFormat = isReturnJsonFormat;
+        return this;
+    }
+
+    public APIBuilder setRequestAsJson(boolean isRequestJsonFormat) {
+        this.isRequestJsonFormat = isRequestJsonFormat;
         return this;
     }
 

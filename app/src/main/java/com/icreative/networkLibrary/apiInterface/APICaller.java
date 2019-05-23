@@ -16,6 +16,7 @@ import io.reactivex.Observable;
 public class APICaller {
 
     private static APICaller instance;
+    public static boolean RESPONSE_LOG = false;
 
     public static APICaller getInstance() {
         if (instance == null) {
@@ -78,18 +79,27 @@ public class APICaller {
         anRequest.getAsJSONObject(new JSONObjectRequestListener() {
             @Override
             public void onResponse(JSONObject response) {
+                //
+                if (RESPONSE_LOG)
+                    Log.e("MyTag", "Response Success:: " + response.toString());
+                //
                 if (apiBuilder.isReturnJsonFormat) {
                     apiInterface.getResponseData(Observable.just(response.toString()));
                 } else {
                     //
                     Gson gson = new Gson();
-                    //
                     apiInterface.getResponseData(Observable.just(gson.fromJson(response.toString(), yourModelName)));
                 }
             }
 
             @Override
             public void onError(ANError anError) {
+                //
+                if (RESPONSE_LOG)
+                    Log.e("MyTag", "Response Error:: " + anError.getErrorBody() + " Detail :: "
+                            + anError.getErrorDetail() + " Message:: " + anError.getMessage() + " Resonse Message:: "
+                            + anError.getResponse().message() + " Response String:: " + anError.getResponse().toString());
+                //
                 apiInterface.getResponseData(Observable.error(anError));
             }
         });

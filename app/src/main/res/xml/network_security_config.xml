@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">http://bms.evowebsitedesign.com</domain>
+        <!--<domain includeSubdomains="true">62.99.144.168:8069</domain>-->
+    </domain-config>
+    <base-config cleartextTrafficPermitted="true" />
+    <!--<trust-anchors>
+        <certificates src="system" />
+    </trust-anchors>-->
+    <!--</base-config>-->
+</network-security-config>

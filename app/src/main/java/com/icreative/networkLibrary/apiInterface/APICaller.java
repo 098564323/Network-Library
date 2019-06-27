@@ -53,7 +53,9 @@ public class APICaller {
 
             @Override
             public void onError(ANError anError) {
-                apiInterface.getResponseData(Observable.error(anError));
+                if (RESPONSE_LOG)
+                    Log.e("MyTag", "Response Error:: " + anError.getErrorBody());
+                apiInterface.getResponseData(Observable.error(new Throwable(anError.getErrorBody())));
             }
         });
     }
@@ -96,11 +98,8 @@ public class APICaller {
             public void onError(ANError anError) {
                 //
                 if (RESPONSE_LOG)
-                    Log.e("MyTag", "Response Error:: " + anError.getErrorBody() + " Detail :: "
-                            + anError.getErrorDetail() + " Message:: " + anError.getMessage() + " Resonse Message:: "
-                            + anError.getResponse().message() + " Response String:: " + anError.getResponse().toString());
-                //
-                apiInterface.getResponseData(Observable.error(anError));
+                    Log.e("MyTag", "Response Error:: " + anError.getErrorBody());
+                apiInterface.getResponseData(Observable.error(new Throwable(anError.getErrorBody())));
             }
         });
 
@@ -136,7 +135,9 @@ public class APICaller {
 
             @Override
             public void onError(ANError anError) {
-                apiInterface.getResponseData(Observable.error(anError));
+                if (RESPONSE_LOG)
+                    Log.e("MyTag", "Response Error:: " + anError.getErrorBody());
+                apiInterface.getResponseData(Observable.error(new Throwable(anError.getErrorBody())));
             }
         });
     }
